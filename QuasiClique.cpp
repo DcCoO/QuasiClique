@@ -173,9 +173,7 @@ Set Ngama(Set &S, double gama){
 Set construct_dsubg(double gama){
     double gama_star = 1;
     Set S, S_star;
-    //S_star.insert(rand() % G.size());   //here it should be a random vertex from G
-    S_star.insert(4);                     //but for testing, it could be a choice
-
+    S_star.insert(rand() % G.size());
     while(gama_star >= gama){
         S = S_star;
         Set Ny_star = Ngama(S, gama_star);
@@ -197,6 +195,6 @@ Set construct_dsubg(double gama){
 int main(){
     srand(time(0));
     readGraph();
-    Set S = construct_dsubg(0.8);
+    Set S = construct_dsubg(0.6);
     showSet(S);
 }
