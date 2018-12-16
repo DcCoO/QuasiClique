@@ -44,7 +44,7 @@ void showGraph(){
 }
 
 void showSet(Set &S){
-    foreach(u : S) cout<<letter[u]<<" "; cout<<endl;
+    foreach(u : S) cout<<letter[u]<<" "; //cout<<endl;
 }
 
 template <typename Type>
@@ -93,7 +93,9 @@ int numberOfEdges(Set &S){
     int ans = 0;
     foreach(u : S){
         foreach(v : G[u]){
-            if(S.contains(u)) ans++;
+            if(S.contains(v)) {
+                ans++;
+            }
         }
     }
     return ans / 2;
@@ -106,8 +108,8 @@ bool isGamaDense(Set &S, double gama){
 }
 
 bool isGamaClique(Set &S, double gama){
-    if(!isConnected(S)) return false;
-    return isGamaDense(S, gama);
+    //if(!isConnected(S)) return false;     //commented because this method
+    return isGamaDense(S, gama);            //only tests connected graphs
 }
 
 double PHI(Set &R, double gama){
@@ -150,11 +152,11 @@ Set N(Set &S){
     return NS;
 }
 
-Set Ngama(Set S, double gama){
+Set Ngama(Set &S, double gama){
     Dict<int, bool> used;
     Set Ny;
     foreach (u : S) {
-        if(used.contains(u)) continue;
+        //if(used.contains(u)) continue;
         foreach(v : G[u]){
             if(!S.contains(v)){
                 if(used[v]) continue;
@@ -178,7 +180,7 @@ Set construct_dsubg(double gama){
         S = S_star;
         Set Ny_star = Ngama(S, gama_star);
         int x = -1;
-        if(Ny_star.size() > 0){
+        if(!Ny_star.empty()){
             x = random(Ny_star);
         }
         else{
@@ -195,8 +197,6 @@ Set construct_dsubg(double gama){
 int main(){
     srand(time(0));
     readGraph();
-
     Set S = construct_dsubg(0.8);
     showSet(S);
-
 }
