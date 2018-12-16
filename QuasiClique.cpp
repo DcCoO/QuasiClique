@@ -6,6 +6,7 @@ using namespace std;
 #define contains(x) count(x)
 #define foreach(exp) for (const int& exp)
 
+char letter[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'x', 'z'};
 int C(int n, int k) {
     int res = 1;
     if (k > n - k) k = n - k;
@@ -19,9 +20,31 @@ int C(int n, int k) {
 
 vector<Set> G;
 
-void edge(int u, int v){
-    G[u].insert(v);
-    if(!directed) G[v].insert(u);
+void readGraph(){
+    freopen("adj_list.txt", "r", stdin);
+    int gsize; cin>>gsize; getchar();
+    G = vector<Set>(gsize);
+    string line;
+    int vertex = 0;
+    while( getline( cin, line ) ){
+        istringstream iss( line );
+        int number;
+        while( iss >> number ) G[vertex].insert(number);
+        vertex++;
+    }
+}
+
+void showGraph(){
+    for(int i = 0; i < G.size(); i++){
+        foreach(u : G[i]){
+            cout<<letter[u]<<" ";
+        }
+        cout<<endl;
+    }
+}
+
+void showSet(Set &S){
+    foreach(u : S) cout<<letter[u]<<" "; cout<<endl;
 }
 
 template <typename Type>
@@ -148,8 +171,9 @@ Set Ngama(Set S, double gama){
 Set construct_dsubg(double gama){
     double gama_star = 1;
     Set S, S_star;
-    S_star.insert(rand() % G.size());   //here it should be a random vertex from G
-                                        //but for testing, it could be a choice
+    //S_star.insert(rand() % G.size());   //here it should be a random vertex from G
+    S_star.insert(4);                     //but for testing, it could be a choice
+
     while(gama_star >= gama){
         S = S_star;
         Set Ny_star = Ngama(S, gama_star);
@@ -168,32 +192,11 @@ Set construct_dsubg(double gama){
     return S;
 }
 
-void readGraph(){
-    freopen("adj_list.txt", "r", stdin);
-    int gsize; cin>>gsize; getchar();
-    G = vector<Set>(gsize);
-    string line;
-    int vertex = 0;
-    while( getline( cin, line ) ){
-        istringstream iss( line );
-        int number;
-        while( iss >> number ) G[vertex].insert(number);
-        vertex++;
-    }
-}
-
-void showGraph(){
-    for(int i = 0; i < G.size(); i++){
-        foreach(u : G[i]){
-            cout<<u<<" ";
-        }
-        cout<<endl;
-    }
-}
-
 int main(){
     srand(time(0));
     readGraph();
 
+    Set S = construct_dsubg(0.8);
+    showSet(S);
 
 }
